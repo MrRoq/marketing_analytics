@@ -1,0 +1,20 @@
+version: 2
+
+sources:
+  - name: snapchat_ads
+    description: "snapchat advertising data from snowflake"
+    database: MARKETING_RAW
+    schema: RAW_SNAPCHAT
+
+    tables:
+      - name: ads
+        identifier: ADS
+
+      - name: ad_groups
+        identifier: AD_GROUPS
+
+      - name: campaigns
+        identifier: CAMPAIGNS
+
+      - name: ads_stats
+        identifier: ADS_STATS

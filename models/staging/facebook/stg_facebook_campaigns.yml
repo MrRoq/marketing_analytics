@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: stg_facebook_campaigns
+    description: >
+      Facebook advertising campaigns.
+      One row represents one campaign. A campaign is not
+      assumed to represent a distinct marketing campaign.
+
+    columns:
+      - name: campaign_id
+        description: "Unique identifier of the advertising campaign."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: campaign_name
+        description: "Campaign label supplied by the source."
+
+      - name: campaign_updated_at
+        description: "Source-provided last update timestamp for the campaign."
+        data_tests:
+          - not_null

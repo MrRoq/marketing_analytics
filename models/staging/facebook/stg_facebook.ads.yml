@@ -1,0 +1,65 @@
+version: 2
+
+models:
+  - name: stg_facebook_ads
+    description: >
+       Facebook advertisements. One row represents one ad,
+       linked to its advertising account, campaign, and ad group.
+
+    columns:
+      - name: ad_id
+        description: "Identifier of the advertisement."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: account_id
+        description: "Identifier of the advertising account."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_facebook_accounts')
+                field: account_id
+
+
+      - name: campaign_id
+        description: "Identifier of the advertising campaign."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_facebook_campaigns')
+                field: campaign_id
+
+
+      - name: ad_group_id
+        description: "Identifier of the advertising ad group."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_facebook_ad_groups')
+                field: ad_group_id
+
+
+      - name: ad_name
+        description: "Ad label supplied by the source." 
+        data_tests:
+          - not_null 
+      
+      - name: ad_status
+        description: "Status of the ad, as supplied by the source."
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['ACTIVE', 'PAUSED', 'DELETED', 'ARCHIVED']
+
+      - name: ad_updated_at
+        description: >
+          Source-provided last update timestamp for the ad,
+          stored with its timezone offset.
+        data_tests:
+          - not_null
+              

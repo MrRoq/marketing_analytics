@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: fct_snapchat_ads_daily
+    columns:
+      - name: ad_group_id
+        description: "Identifier of the ad group associated with the ad."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_snapchat_ad_groups')
+                field: ad_group_id

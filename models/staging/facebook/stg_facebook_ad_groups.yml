@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: stg_facebook_ad_groups
+    description: >
+      Facebook advertising ad groups.
+      One row represents one ad group, identified by ad_group_id.
+
+    columns:
+      - name: ad_group_id
+        description: "Unique identifier of the advertising ad group."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: ad_group_name
+        description: "Ad group label supplied by the source."
+
+      - name: ad_group_updated_at
+        description: "Source-provided last update timestamp for the ad group."
+        data_tests:
+          - not_null

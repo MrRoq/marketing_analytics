@@ -1,0 +1,72 @@
+version: 2
+
+models:
+  - name: fct_paid_ads_daily
+    description: >
+      Unified daily Facebook and Snapchat advertising performance.
+      One row represents one ad, on one platform, on one reporting date.
+      Snapchat country rows are aggregated into daily totals.
+      Missing impressions and clicks are treated as zero.
+      Spend remains in its source currency.
+
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - platform
+              - ad_id
+              - reporting_date
+
+    columns:
+      - name: platform
+        description: "Advertising platform supplying the record."
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['facebook', 'snapchat']
+
+      - name: ad_id
+        description: "Ad identifier within the advertising platform."
+        data_tests:
+          - not_null
+
+      - name: ad_group_id
+        description: "Identifier of the ad group associated with the ad."
+        data_tests:
+          - not_null
+
+      - name: campaign_id
+        description: "Identifier of the campaign associated with the ad."
+        data_tests:
+          - not_null
+
+      - name: account_id
+        description: "Identifier of the advertising account."
+        data_tests:
+          - not_null
+
+      - name: reporting_date
+        description: "Date of the reported advertising activity."
+        data_tests:
+          - not_null
+
+      - name: currency_code
+        description: "Currency of the reported spend. No conversion is applied."
+        data_tests:
+          - not_null
+
+      - name: spend
+        description: "Daily advertising spend in the source currency."
+        data_tests:
+          - not_null
+
+      - name: impressions
+        description: "Daily impressions, treating missing source counts as zero."
+        data_tests:
+          - not_null
+
+      - name: clicks
+        description: "Daily clicks, treating missing source counts as zero."
+        data_tests:
+          - not_null

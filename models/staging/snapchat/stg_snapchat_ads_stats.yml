@@ -1,0 +1,55 @@
+version: 2
+
+models:
+  - name: stg_snapchat_ads_stats
+    description: >
+      Snapchat advertising performance by ad, reporting date,
+      and country. One row represents one ad's performance
+      in one country on one reporting date.
+
+    columns:
+      - name: ad_id
+        description: >
+          Identifier of the advertisement, renamed from
+          the source column ad_detail_id.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_snapchat_ads')
+                field: ad_id
+
+      - name: reporting_date
+        description: "Date the advertising performance relates to."
+        data_tests:
+          - not_null
+
+      - name: country_code
+        description: >
+          Country code supplied with the performance record.
+          The precise geographic attribution definition
+          remains to be confirmed.
+        data_tests:
+          - not_null
+
+      - name: currency_code
+        description: "Currency code supplied with the spend amount."
+        data_tests:
+          - not_null
+
+      - name: spend
+        description: >
+          Advertising spend in the supplied currency.
+          Preserve the source precision of up to six decimal places.
+          No currency conversion is applied.
+        data_tests:
+          - not_null
+
+      - name: impressions
+        description: "Recorded number of ad displays."
+
+      - name: clicks
+        description: >
+          Recorded click count. The source text 'null' is
+          converted to SQL NULL rather than zero.
+                                                                                           

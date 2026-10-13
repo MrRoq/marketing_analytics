@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: stg_snapchat_ad_groups
+    description: >
+      Snapchat ad-group records supplied by the source.
+      Multiple versions of an ad group may exist, distinguished
+      by their update timestamps.
+
+    columns:
+      - name: ad_group_id
+        description: "Identifier of the advertising ad group."
+        data_tests:
+          - not_null
+
+      - name: campaign_id
+        description: "Identifier of the campaign referenced by the ad group."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_snapchat_campaigns')
+                field: campaign_id
+
+      - name: ad_group_name
+        description: "Ad-group label supplied by the source."
+
+      - name: ad_group_updated_at
+        description: "Source-provided last update timestamp for the ad group."
+        data_tests:
+          - not_null

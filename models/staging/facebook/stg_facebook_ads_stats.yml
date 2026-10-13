@@ -1,0 +1,50 @@
+version: 2
+
+models:
+  - name: stg_facebook_ads_stats
+    description: >
+      Daily Facebook advertising performance.
+      One row represents one ad on one reporting date.
+      Source text 'null' values in impressions and clicks
+      are converted to SQL NULL.
+
+    columns:
+      - name: ad_id
+        description: "Identifier of the advertisement."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_facebook_ads')
+                field: ad_id
+
+      - name: account_id
+        description: "Identifier of the advertising account."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_facebook_accounts')
+                field: account_id
+
+      - name: reporting_date
+        description: "Date the advertising performance relates to."
+        data_tests:
+          - not_null
+
+      - name: spend
+        description: >
+          Advertising spend in the account's currency.
+          Stored as NUMBER(18, 2), preserving the two decimal
+          places supplied by the source. No currency conversion
+          is applied.
+
+      - name: impressions
+        description: >
+          Recorded number of ad displays.
+          Missing values remain NULL rather than becoming zero.
+
+      - name: clicks
+        description: >
+          Recorded click count. The exact definition of a click
+          remains to be confirmed. Missing values remain NULL.

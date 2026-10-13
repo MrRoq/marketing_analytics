@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: stg_facebook_accounts
+    description: >
+      Facebook advertising accounts.
+      One row represents one account. An account is not
+      assumed to represent a distinct company.
+
+    columns:
+      - name: account_id
+        description: "Unique identifier of the advertising account."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: account_name
+        description: "Account label supplied by the source."
+
+      - name: currency_code
+        description: "Currency associated with the advertising account."
+
+      - name: account_created_at
+        description: "Source-provided account creation timestamp."
+
+      - name: account_updated_at
+        description: "Source-provided last update timestamp."
+        data_tests:
+          - not_null

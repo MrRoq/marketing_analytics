@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: stg_snapchat_campaigns
+    description: >
+      Snapchat advertising campaigns.
+      One row represents one campaign linked to an advertising account.
+
+    columns:
+      - name: campaign_id
+        description: "Unique identifier of the advertising campaign."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: account_id
+        description: "Identifier of the advertising account."
+        data_tests:
+          - not_null
+
+      - name: campaign_name
+        description: "Campaign label supplied by the source."

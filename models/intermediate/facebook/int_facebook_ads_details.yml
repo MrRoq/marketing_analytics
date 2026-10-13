@@ -1,0 +1,61 @@
+version: 2
+
+models:
+  - name: int_facebook_ads_details
+    description: >
+      Current Facebook ad details enriched with ad group,
+      campaign, account, and currency information.
+      One row represents one ad. Each descriptive staging model
+      is expected to contain one current record per entity ID.
+      Historical descriptions are not reconstructed.
+
+    columns:
+      - name: ad_id
+        description: "Unique identifier of the advertisement."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: account_id
+        description: "Identifier of the account referenced by the ad."
+
+      - name: campaign_id
+        description: "Identifier of the campaign referenced by the ad."
+
+      - name: ad_group_id
+        description: "Identifier of the ad group referenced by the ad."
+
+      - name: ad_name
+        description: "Ad label supplied by the source."
+
+      - name: ad_status
+        description: >
+          Status supplied by the current ad record.
+          All statuses are retained. This does not indicate
+          the ad's status on each historical reporting date.
+
+      - name: ad_group_name
+        description: "Name of the ad group associated with the ad."
+
+      - name: campaign_name
+        description: "Name of the campaign associated with the ad."
+
+      - name: account_name
+        description: "Name of the advertising account associated with the ad."
+
+      - name: currency_code
+        description: "Currency associated with the advertising account."
+
+      - name: ad_detail_updated_at
+        description: >
+          Latest source update timestamp among the ad, ad group,
+          campaign, and account contributing to this row.
+          This is not the ingestion time or the dbt build time.
+          Returns NULL if any contributing timestamp is NULL.
+
+      - name: ad_updated_at
+        description: >
+          "Source-provided last update timestamp for the selected ad record."
+      
+      - name: platform
+        description: "Advertising platform supplying the record: facebook."

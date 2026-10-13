@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: stg_snapchat_ads  
+    description: >
+       snapchat advertisements. One row represents one ad,
+       linked to its advertising campaign and ad group.
+
+    columns:
+      - name: ad_id
+        description: "Unique identifier of the advertisement."
+        data_tests:
+          - not_null
+          - unique
+      - name: ad_group_id
+        description: "Identifier of the ad group referenced by the ad."
+        data_tests:
+          - not_null
+          #- relationships:
+              #arguments:
+                #to: ref('stg_snapchat_ad_groups')
+                #field: ad_group_id
+
+      - name: ad_detail_updated_at
+        description: "Source-provided update timestamp for the ad details."
+        data_tests:  
+          - not_null
+
+      - name: ad_name
+        description: "Ad label supplied by the source."
