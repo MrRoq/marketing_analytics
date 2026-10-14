@@ -1,0 +1,65 @@
+name: dbt CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dbt-ci-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  build-and-test:
+    name: Build and test dbt
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    env:
+      SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      DBT_ENV_SECRET_CI_KEY_PASSPHRASE: ${{ secrets.DBT_ENV_SECRET_CI_KEY_PASSPHRASE }}
+      SNOWFLAKE_CI_PRIVATE_KEY_PATH: ${{ runner.temp }}/marketing_dbt_ci_key.p8
+      DBT_CI_SCHEMA: PR_${{ github.event.pull_request.number }}
+
+    steps:
+      - name: Check out project
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dbt
+        run: |
+          python -m pip install "dbt==2.0.6"
+          dbt --version
+
+      - name: Prepare Snowflake private key
+        env:
+          SNOWFLAKE_CI_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_CI_PRIVATE_KEY }}
+        run: |
+          umask 077
+          printf '%s\n' "$SNOWFLAKE_CI_PRIVATE_KEY" > "$SNOWFLAKE_CI_PRIVATE_KEY_PATH"
+
+      - name: Install project packages
+        run: dbt deps --profiles-dir ci --target ci
+
+      - name: Check Snowflake connection
+        run: dbt debug --profiles-dir ci --target ci
+
+      - name: Prepare Elementary models
+        run: dbt run --select elementary --profiles-dir ci --target ci
+
+      - name: Build and test project
+        run: dbt build --select marketing_analytics --profiles-dir ci --target ci
+
+      - name: Remove temporary private key
+        if: always()
+        run: rm -f "$SNOWFLAKE_CI_PRIVATE_KEY_PATH"
