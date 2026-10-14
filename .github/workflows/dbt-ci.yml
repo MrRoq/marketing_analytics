@@ -46,7 +46,9 @@ jobs:
           SNOWFLAKE_CI_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_CI_PRIVATE_KEY }}
         run: |
           umask 077
-          printf '%s\n' "$SNOWFLAKE_CI_PRIVATE_KEY" > "$SNOWFLAKE_CI_PRIVATE_KEY_PATH"
+          key_path="$RUNNER_TEMP/marketing_dbt_ci_key.p8"
+          printf '%s\n' "$SNOWFLAKE_CI_PRIVATE_KEY" > "$key_path"
+          echo "SNOWFLAKE_CI_PRIVATE_KEY_PATH=$key_path" >> "$GITHUB_ENV"
 
       - name: Install project packages
         run: dbt deps --profiles-dir ci --target ci
