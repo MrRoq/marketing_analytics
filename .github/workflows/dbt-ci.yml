@@ -22,7 +22,6 @@ jobs:
     env:
       SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
       DBT_ENV_SECRET_CI_KEY_PASSPHRASE: ${{ secrets.DBT_ENV_SECRET_CI_KEY_PASSPHRASE }}
-      SNOWFLAKE_CI_PRIVATE_KEY_PATH: ${{ runner.temp }}/marketing_dbt_ci_key.p8
       DBT_CI_SCHEMA: PR_${{ github.event.pull_request.number }}
 
     steps:
