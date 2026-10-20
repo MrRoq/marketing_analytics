@@ -1047,25 +1047,3 @@ The supplied brief specified Databricks, Unity Catalog, and a production Service
 
 Automated source ingestion, scheduled refresh, ingestion freshness, full historical attribution, foreign-exchange conversion, and incremental processing are not represented as implemented features. They require additional contracts or evidence. CI schema cleanup, reporting-grant checks after rebuild, and final non-secret OAuth configuration capture remain operational follow-ups.
 
-### Documentation basis
-
-Updated 20 October 2026 after inspecting the public repository at commit b8adc8f0710403916ce41353591280b146e55c19. SQL models, YAML, tests, package declarations, and GitHub workflow files were read from a local clone. No warehouse build or GitHub settings audit was performed. Runtime validation and manually created Snowflake objects remain supported by the earlier project evidence, not by this repository inspection. The repository still contains the generated Jaffle Shop README; this documentation package has not been pushed or committed there.
-
-### Concrete documentation gaps found in code
-
-- int_snapchat_ads_details.yml is empty.
-- No dedicated YAML file for fct_facebook_ads_daily is present.
-- The Facebook statistics YAML describes spend as NUMBER(18,2), while the SQL uses NUMBER(38,2).
-- Facebook ad timestamp wording claims a stored timezone offset, while SQL casts to TIMESTAMP; the effective Snowflake timestamp mapping must be checked before making that guarantee.
-- Source table declarations have limited descriptive documentation.
-- Snowflake semantic-view, agent, MCP, OAuth, and grant provisioning scripts are absent from the inspected checkout.
-
-These are documentation and reproducibility follow-ups. They were recorded, not silently changed as part of the README work.
-
-</details>
-
----
-
-**Evidence basis:** source code inspected at commit `b8adc8f0710403916ce41353591280b146e55c19`; runtime results are the recorded project validation. The review did not execute another warehouse build or inspect GitHub branch-protection settings. Repository findings describe that snapshot and may change after subsequent commits.
-
-**Documentation updated:** 20 October 2026. No paid client engagement, financial return, or measured analyst time saving is claimed.
