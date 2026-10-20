@@ -1,0 +1,68 @@
+version: 2
+
+models:
+  - name: int_snapchat_ads_details
+    description: >
+      Snapchat ads enriched with the latest available ad-group
+      details and their campaign and account identifiers.
+      One row represents one ad.
+      Left joins preserve ads when parent details are missing.
+      These are current details, not details reconstructed
+      as of each historical reporting date.
+
+    columns:
+      - name: ad_id
+        description: "Unique identifier of the Snapchat advertisement."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: ad_group_id
+        description: >
+          Ad-group identifier supplied by the ad record.
+          The identifier can be present even when its corresponding
+          ad-group record is missing from the supplied data.
+
+      - name: campaign_id
+        description: >
+          Campaign identifier obtained from the latest matching
+          ad-group record. NULL when that record is unavailable.
+
+      - name: account_id
+        description: >
+          Account identifier obtained from the matching campaign.
+          NULL when the required parent details are unavailable.
+          No separate Snapchat account table is supplied.
+
+      - name: ad_name
+        description: "Ad name supplied by the source."
+
+      - name: ad_group_name
+        description: >
+          Name from the latest matching ad-group record.
+          NULL when no matching record is available.
+
+      - name: campaign_name
+        description: >
+          Name from the matching campaign record.
+          NULL when no matching record is available.
+
+      - name: ad_detail_updated_at
+        description: >
+          Source update timestamp from the ad record.
+          This is not a combined timestamp for all joined entities
+          and is not the warehouse ingestion or model build time.
+
+      - name: ad_group_updated_at
+        description: >
+          Source update timestamp of the selected ad-group record.
+          Used to select the latest available version.
+          NULL when no matching ad-group record is available.
+
+      - name: platform
+        description: "Advertising platform supplying these records."
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['snapchat']
